@@ -51,28 +51,42 @@ build cmake_object_order_depends_target_first: phony || CMakeFiles/first.dir
 
 build CMakeFiles/first.dir/main.cpp.o: CXX_COMPILER__first_unscanned_Debug /Users/konrad/Documents/projects/cpp/sfml/first/main.cpp || cmake_object_order_depends_target_first
   DEP_FILE = CMakeFiles/first.dir/main.cpp.o.d
-  FLAGS = -std=c++14 -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  FLAGS = -g -std=gnu++2b -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   INCLUDES = -isystem /usr/local/include
   OBJECT_DIR = CMakeFiles/first.dir
   OBJECT_FILE_DIR = CMakeFiles/first.dir
 
 build CMakeFiles/first.dir/Particle.cpp.o: CXX_COMPILER__first_unscanned_Debug /Users/konrad/Documents/projects/cpp/sfml/first/Particle.cpp || cmake_object_order_depends_target_first
   DEP_FILE = CMakeFiles/first.dir/Particle.cpp.o.d
-  FLAGS = -std=c++14 -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  FLAGS = -g -std=gnu++2b -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   INCLUDES = -isystem /usr/local/include
   OBJECT_DIR = CMakeFiles/first.dir
   OBJECT_FILE_DIR = CMakeFiles/first.dir
 
 build CMakeFiles/first.dir/Particle_container.cpp.o: CXX_COMPILER__first_unscanned_Debug /Users/konrad/Documents/projects/cpp/sfml/first/Particle_container.cpp || cmake_object_order_depends_target_first
   DEP_FILE = CMakeFiles/first.dir/Particle_container.cpp.o.d
-  FLAGS = -std=c++14 -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  FLAGS = -g -std=gnu++2b -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   INCLUDES = -isystem /usr/local/include
   OBJECT_DIR = CMakeFiles/first.dir
   OBJECT_FILE_DIR = CMakeFiles/first.dir
 
 build CMakeFiles/first.dir/Utils.cpp.o: CXX_COMPILER__first_unscanned_Debug /Users/konrad/Documents/projects/cpp/sfml/first/Utils.cpp || cmake_object_order_depends_target_first
   DEP_FILE = CMakeFiles/first.dir/Utils.cpp.o.d
-  FLAGS = -std=c++14 -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  FLAGS = -g -std=gnu++2b -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  INCLUDES = -isystem /usr/local/include
+  OBJECT_DIR = CMakeFiles/first.dir
+  OBJECT_FILE_DIR = CMakeFiles/first.dir
+
+build CMakeFiles/first.dir/Control_rod.cpp.o: CXX_COMPILER__first_unscanned_Debug /Users/konrad/Documents/projects/cpp/sfml/first/Control_rod.cpp || cmake_object_order_depends_target_first
+  DEP_FILE = CMakeFiles/first.dir/Control_rod.cpp.o.d
+  FLAGS = -g -std=gnu++2b -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  INCLUDES = -isystem /usr/local/include
+  OBJECT_DIR = CMakeFiles/first.dir
+  OBJECT_FILE_DIR = CMakeFiles/first.dir
+
+build CMakeFiles/first.dir/Node.cpp.o: CXX_COMPILER__first_unscanned_Debug /Users/konrad/Documents/projects/cpp/sfml/first/Node.cpp || cmake_object_order_depends_target_first
+  DEP_FILE = CMakeFiles/first.dir/Node.cpp.o.d
+  FLAGS = -g -std=gnu++2b -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
   INCLUDES = -isystem /usr/local/include
   OBJECT_DIR = CMakeFiles/first.dir
   OBJECT_FILE_DIR = CMakeFiles/first.dir
@@ -85,8 +99,8 @@ build CMakeFiles/first.dir/Utils.cpp.o: CXX_COMPILER__first_unscanned_Debug /Use
 #############################################
 # Link the executable first
 
-build first: CXX_EXECUTABLE_LINKER__first_Debug CMakeFiles/first.dir/main.cpp.o CMakeFiles/first.dir/Particle.cpp.o CMakeFiles/first.dir/Particle_container.cpp.o CMakeFiles/first.dir/Utils.cpp.o | /usr/local/lib/libsfml-graphics.2.6.1.dylib /usr/local/lib/libsfml-audio.2.6.1.dylib /usr/local/lib/libsfml-network.2.6.1.dylib /usr/local/lib/libsfml-window.2.6.1.dylib /usr/local/lib/libsfml-system.2.6.1.dylib
-  FLAGS = -std=c++14 -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk
+build first: CXX_EXECUTABLE_LINKER__first_Debug CMakeFiles/first.dir/main.cpp.o CMakeFiles/first.dir/Particle.cpp.o CMakeFiles/first.dir/Particle_container.cpp.o CMakeFiles/first.dir/Utils.cpp.o CMakeFiles/first.dir/Control_rod.cpp.o CMakeFiles/first.dir/Node.cpp.o | /usr/local/lib/libsfml-graphics.2.6.1.dylib /usr/local/lib/libsfml-audio.2.6.1.dylib /usr/local/lib/libsfml-network.2.6.1.dylib /usr/local/lib/libsfml-window.2.6.1.dylib /usr/local/lib/libsfml-system.2.6.1.dylib
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk
   LINK_LIBRARIES = -Wl,-rpath,/usr/local/lib  /usr/local/lib/libsfml-graphics.2.6.1.dylib  /usr/local/lib/libsfml-audio.2.6.1.dylib  /usr/local/lib/libsfml-network.2.6.1.dylib  /usr/local/lib/libsfml-window.2.6.1.dylib  /usr/local/lib/libsfml-system.2.6.1.dylib
   OBJECT_DIR = CMakeFiles/first.dir
   POST_BUILD = :

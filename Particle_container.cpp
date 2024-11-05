@@ -95,6 +95,7 @@ void Particle_container::particle_collisions() {
 
 
 
+
             std::shared_ptr<Particle> p1 = particles[iter];
             std::shared_ptr<Particle> p2 = particles[iter_y];
 
@@ -152,4 +153,7 @@ void Particle_container::particle_collisions() {
         }
 
     }
-    };
+    }
+
+void Particle_container::particle_collisions_test(sf::RenderWindow &_window) {
+};

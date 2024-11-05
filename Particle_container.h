@@ -5,6 +5,17 @@
 #ifndef PARTICLE_CONTAINER_H
 #define PARTICLE_CONTAINER_H
 #include "Particle.h"
+#include "Control_rod.hpp"
+
+
+struct Node {
+private:
+    sf::Vector2f node_pos;
+    std::variant<std::shared_ptr<Particle>, std::shared_ptr<Control_rod>> data;
+public:
+    Node(const std::variant<std::shared_ptr<Particle>, std::shared_ptr<Control_rod>> &_data, const sf::Vector2f &_node_pos):node_pos(_node_pos), data(_data) {}
+    Node():node_pos({0,0}){};
+};
 
 class Particle_container {
 private:
@@ -21,6 +32,7 @@ public:
 
     void update_particles(const float &_delta_time);
     void particle_collisions();
+    void particle_collisions_test(sf::RenderWindow &_window);
 
 };
 

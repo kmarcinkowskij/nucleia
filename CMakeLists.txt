@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(first)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+
+set(CMAKE_CXX_STANDARD 26)
 
 set(SOURCE_FILES main.cpp
         Particle.cpp
@@ -10,6 +12,8 @@ set(SOURCE_FILES main.cpp
         Particle_container.h
         Utils.cpp
         Utils.hpp
+        Control_rod.cpp
+        Control_rod.hpp
 )
 add_executable(first ${SOURCE_FILES})
 include_directories(/usr/local/include)
