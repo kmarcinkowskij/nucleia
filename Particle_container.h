@@ -15,7 +15,7 @@ private:
 public:
     explicit Particle_container(const sf::Vector2u &_window_size):window_size(_window_size){};
     void add_particle(const std::shared_ptr<Particle> &_particle);
-    void add_particle(const unsigned int &_particle_id, const float &_particle_radius, const sf::Vector2f &_particle_position, const sf::Color &_particle_color, const sf::Vector2f &_particle_force, const float &_mass);
+    void add_particle(const float &_particle_radius, const sf::Vector2f &_particle_position, const sf::Color &_particle_color, const sf::Vector2f &_particle_force, const float &_mass, const Utils::particle_types &_particle_type);
     void remove_particle(const unsigned int &_particle_id);
     void draw_particles(sf::RenderWindow &_window);
 

@@ -10,7 +10,7 @@
 
 class Utils {
 public:
-    enum particle_types {nucleon, neutron, xenon, water};
+    enum particle_types {nucleon, neutron, xenon, water, unset};
     static sf::Vector2f subtract_vectors(sf::Vector2f v1, sf::Vector2f v2);
     static sf::Vector2f sum_vectors(sf::Vector2f v1, sf::Vector2f v2);
     static sf::Vector2f normalize_vector(sf::Vector2f v1);

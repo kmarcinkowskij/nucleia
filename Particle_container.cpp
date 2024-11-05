@@ -29,21 +29,22 @@ void Particle_container::add_particle(const std::shared_ptr<Particle> &_particle
     }
 }
 
-void Particle_container::add_particle(const unsigned int &_particle_id, const float &_particle_radius,
-    const sf::Vector2f &_particle_position, const sf::Color &_particle_color, const sf::Vector2f &_particle_force, const float &_mass) {
+void Particle_container::add_particle(const float &_particle_radius,
+    const sf::Vector2f &_particle_position, const sf::Color &_particle_color, const sf::Vector2f &_particle_force, const float &_mass, const Utils::particle_types &_particle_type) {
     try {
 
-        const auto it = std::find_if(this->particles.begin(), this->particles.end(), [&](const std::shared_ptr<Particle> &current_particle) {
-            return current_particle->return_id() == _particle_id;
-        });
+        // const auto it = std::find_if(this->particles.begin(), this->particles.end(), [&](const std::shared_ptr<Particle> &current_particle) {
+        //     return current_particle->return_id() == _particle_id;
+        // });
 
-        if(it != this->particles.end()) {
-           std::cerr << "Particle with this ID already exists!\n";
-            return;
-        }
+        // if(it != this->particles.end()) {
+        //    std::cerr << "Particle with this ID already exists!\n";
+        //     return;
+        // }
 
-        this->particles.push_back(std::make_shared<Particle>(Particle(_particle_id, const_cast<float &>(_particle_radius), _particle_position, _particle_force, _mass)));
-
+        this->particles.push_back(std::make_shared<Particle>(Particle(this->particles.size()-1, _particle_radius, _particle_position, _particle_color, _particle_force, _mass, _particle_type)));
+        // std::cout << _particle_color << "\n";
+        // std::cout << "successfully added new particle!\n";
 
     }catch(const std::exception &exception) {
         std::cout << exception.what() << "\n";
@@ -60,6 +61,7 @@ void Particle_container::remove_particle(const unsigned int &_particle_id) {
 
 void Particle_container::draw_particles(sf::RenderWindow &_window) {
     for(const std::shared_ptr<Particle> &Particle: this->particles ) {
+        // std::cout << Particle->get_shape().getFillColor().toInteger() << "\n";
         Particle->render(_window);
     }
 }
@@ -105,6 +107,8 @@ void Particle_container::particle_collisions() {
             // std::cout << "particle 1 ID: " << this->particles[iter]->return_id() << " particle 2 ID: " << this->particles[iter_y]->return_id() << " the distance " << distance_between_centers << " the radius " << sum_of_radius << "\n";
             if(sum_of_radius >= distance_between_centers) {
 
+
+
                 sf::Vector2f v1 = p1->get_force();
                 sf::Vector2f v2 = p2->get_force();
 
@@ -113,30 +117,12 @@ void Particle_container::particle_collisions() {
 
                 float dot_product = Utils::calculate_dot_product(relative_velocity, collision_normal);
 
-                //         # If vel_along_normal > 0, they are moving apart already, no need to adjust
-                //         if vel_along_normal > 0:
-                //             return p1.velocity, p2.velocity
-                //
-                //         # Step 3.3: Calculate the impulse scalar
-                //         restitution = 1  # for a perfectly elastic collision
-                //         impulse = (-(1 + restitution) * vel_along_normal) / (1 / p1.mass + 1 / p2.mass)
-                //
-                //         # Step 3.4: Calculate the final velocities
-                //         impulse_vector = (impulse * collision_normal[0], impulse * collision_normal[1])
-                //
-                //         # Update velocities by adding/subtracting impulse
-                //         v1_final = (p1.velocity[0] + impulse_vector[0] / p1.mass,
-                //                     p1.velocity[1] + impulse_vector[1] / p1.mass)
-                //
-                //         v2_final = (p2.velocity[0] - impulse_vector[0] / p2.mass,
-                //                     p2.velocity[1] - impulse_vector[1] / p2.mass)
-                //
-                //         return v1_final, v2_final
 
                 if(dot_product > 0) continue;
                 float restitution = 0.5;
                 float impulse = (-(1 + restitution) * dot_product) / (1 / p1->get_mass() + 1/p2->get_mass());
                 sf::Vector2f impulse_vector = {impulse * collision_normal.x, impulse * collision_normal.y};
+                sf::Vector2f impulse_vector_second = {impulse * (-1* collision_normal.x), impulse * (-1 * collision_normal.y)};
 
                 if(p1->get_force().x < 0) {
                     p1->set_force(sf::Vector2f(p1->get_force().x + this->wall_hit_force_decay + impulse_vector.x / p1->get_mass(), p1->get_force().y + impulse_vector.y / p1->get_mass()));
@@ -146,28 +132,24 @@ void Particle_container::particle_collisions() {
 
                 p2->set_force({p2->get_force().y - impulse_vector.y / p2->get_mass(), p2->get_force().y - impulse_vector.y / p2->get_mass()});
 
+                if(p1->get_particle_type() == Utils::nucleon) {
+                    sf::Vector2f og_pos = p1->get_shape().getPosition();
+                    const float og_x_force = p2->get_force().x;
+                    const float og_y_force = p2->get_force().y;
+                    remove_particle(p1->return_id());
+                    // std::cout << "removed nucleus after collision with neutron!\n";
+                    // this->particles.push_back(std::make_shared<Particle>(1000, 10, og_pos, sf::Color::White, {20.f, 40.f}, 1.f, Utils::neutron));
+                    // this->particles.push_back(std::make_shared<Particle>(10, og_pos, sf::Color::White, {20.f, 40.f}, 1.f, Utils::neutron));
+                    this->add_particle(5, og_pos, sf::Color{29, 53, 87}, {25 * p1->get_force().x + this->wall_hit_force_decay + impulse_vector_second.x / 5, 25 * p1->get_force().y + impulse_vector_second.y / 5}, 1.f, Utils::neutron);
+                    this->add_particle(5, og_pos, sf::Color{29, 53, 87}, {25 * p1->get_force().x + this->wall_hit_force_decay + impulse_vector.x / 5, 25 * p1->get_force().y + impulse_vector.y / 5}, 1.f, Utils::neutron);
+                    this->add_particle(16, og_pos, sf::Color{107, 107, 107}, { impulse_vector.x / 25, impulse_vector.y / 25}, 10.f, Utils::xenon);
 
-                //         float xa = this->particles[iter]->get_shape().getPosition().x;
-                //         float xb = this->particles[iter_y]->get_shape().getPosition().x;
-                //         float ya = this->particles[iter]->get_shape().getPosition().y;
-                //         float yb = this->particles[iter_y]->get_shape().getPosition().y;
-                //         float distance_between_centers = sqrt((xb-xa)*(xb-xa) + (yb-ya)*(yb-ya));
-                //         float sum_of_radius = this->particles[iter]->get_shape().getRadius() + this->particles[iter_y]->get_shape().getRadius();
-                //         // std::cout << "particle 1 ID: " << this->particles[iter]->return_id() << " particle 2 ID: " << this->particles[iter_y]->return_id() << " the distance " << distance_between_centers << " the radius " << sum_of_radius << "\n";
-                //         if(sum_of_radius >= distance_between_centers) {
-                //             // std::cout << "particle " << particles[iter]->return_id() << " collided with particle " << particles[iter_y]->return_id() << "\n";
-                //             // particles[iter]->get_shape().setFillColor(sf::Color::Green);
-                //             particles[iter]->set_force(sf::Vector2f(particles[iter]->get_force().x * -1,particles[iter]->get_force().y * -1 ));
-                //             particles[iter_y]->set_force(sf::Vector2f(particles[iter_y]->get_force().x * -1,particles[iter_y]->get_force().y * -1 ));
-                //
+                    return;
+                    //
+                    //
+                }
             }
         }
 
-
-        // std::cout << "distance: " << distance << ", sum of radius " << this->particles[iter]->get_shape().getRadius() + this->particles[iter+1]->get_shape().getRadius() << "\n";
-        // if(distance <= this->particles[iter]->get_shape().getRadius() + this->particles[iter+1]->get_shape().getRadius()) {
-        //     // remove_particle(this->particles[iter]->return_id());
-        //
-        // }
     }
     };

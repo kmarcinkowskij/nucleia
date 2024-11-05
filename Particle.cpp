@@ -4,13 +4,27 @@
 
 #include "Particle.h"
 
+#include "Utils.hpp"
+
 void Particle::set_particle_force_base(const sf::Vector2f &particle_force_base) {
+
         this->particle_force_base = particle_force_base;
 }
 
 void Particle::update(const float &_delta_time) {
+    //Todo::Rework acceleration
+    //Acceleration = change of velocity / time_taken
+    //Velocity = distance/time
 
-        this->shape.move(this->particle_force * _delta_time);
+    //Δvelocity = velocity - 0 (if force applied to stationary object)
+
+
+     float length_to_move = Utils::calculate_magnitude_of_vector(this->particle_force);
+     float terminal_velocity = 50.f;
+
+     float acceleration_multiplier = 0;
+
+     this->shape.move(this->particle_force * _delta_time);
 }
 
 void Particle::render(sf::RenderWindow &_window) {

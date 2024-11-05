@@ -10,8 +10,7 @@ set(SOURCE_FILES main.cpp
         Particle_container.h
         Utils.cpp
         Utils.hpp
-        Neutron.hpp
-        Nucleon.hpp)
+)
 add_executable(first ${SOURCE_FILES})
 include_directories(/usr/local/include)
 
