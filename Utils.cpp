@@ -24,3 +24,7 @@ float Utils::calculate_magnitude_of_vector(sf::Vector2f v) {
 float Utils::calculate_dot_product(sf::Vector2f v1, sf::Vector2f v2) {
     return (v1.x*v2.x)+(v1.y*v2.y);
 }
+
+sf::Vector2f Utils::add_vectors(const sf::Vector2f& vec1, const sf::Vector2f& vec2) {
+    return sf::Vector2f(vec1.x + vec2.x, vec1.y + vec2.y);
+}

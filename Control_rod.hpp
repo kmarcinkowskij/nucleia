@@ -4,7 +4,8 @@
 
 #ifndef CONTROL_ROD_HPP
 #define CONTROL_ROD_HPP
-#include <SFML/Graphics/RectangleShape.hpp>
+
+#include <SFML/Graphics.hpp>
 
 struct Moderator {
     sf::RectangleShape moderator_shape;
@@ -13,13 +14,10 @@ struct Moderator {
     }
 };
 
-class Control_rod {
+struct Control_rod {
     sf::RectangleShape upper_shape;
     sf::RectangleShape lower_shape;
     Moderator moderator_rod;
 };
-
-
-
 
 #endif //CONTROL_ROD_HPP

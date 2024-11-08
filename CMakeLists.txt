@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 project(first)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
-
 set(CMAKE_CXX_STANDARD 26)
 
 set(SOURCE_FILES main.cpp
@@ -13,11 +11,15 @@ set(SOURCE_FILES main.cpp
         Utils.cpp
         Utils.hpp
         Control_rod.cpp
+        Quad_tree.hpp
         Control_rod.hpp
 )
 add_executable(first ${SOURCE_FILES})
-include_directories(/usr/local/include)
+
+set(SFML_DIR "C:/vcpkg/vcpkg/packages/sfml_x64-windows/share/sfml")
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+
 include_directories(${SFML_INCLUDE_DIRS})
+
 target_link_libraries(first sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
