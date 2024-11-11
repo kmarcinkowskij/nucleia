@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+
+
 void Particle_container::add_particle(const std::shared_ptr<Particle>& _particle) {
     try {
         const auto it = std::find_if(this->particles.begin(), this->particles.end(), [&](const std::shared_ptr<Particle>& current_particle) {
@@ -80,6 +82,17 @@ void Particle_container::update_particles(const float& _delta_time) {
     }
 }
 
+bool Particle_container::check_collision(const std::shared_ptr<Particle> &_p1,
+    const std::shared_ptr<Particle> &_p2) const {
+    if(_p1->get_bottom_pos() <= _p2->get_top_pos() || _p1->get_top_pos() >= _p2->get_bottom_pos()) {
+        return true;
+    }
+    if(_p1->get_left_pos() <= _p2->get_right_pos() || _p1->get_right_pos() >= _p2->get_left_pos()) {
+        return true;
+    }
+    return false;
+}
+
 void Particle_container::particle_collisions() {
     const sf::FloatRect bounds(0.f, 0.f, 1280.f, 1090.f);
     Quadtree quadtree(0, bounds);
@@ -102,46 +115,44 @@ void Particle_container::particle_collisions() {
         for (auto& p2 : nearby_particles) {
             if (p1 == p2) continue;
 
-            const float xa = p1->get_shape().getPosition().x;
-            const float xb = p2->get_shape().getPosition().x;
-            const float ya = p1->get_shape().getPosition().y;
-            const float yb = p2->get_shape().getPosition().y;
-            const float distance_between_centers = sqrt((xb - xa) * (xb - xa) + (yb - ya) * (yb - ya));
-            const float sum_of_radius = p1->get_shape().getRadius() + p2->get_shape().getRadius();
+            // const float xa = p1->get_shape().getPosition().x;
+            // const float xb = p2->get_shape().getPosition().x;
+            // const float ya = p1->get_shape().getPosition().y;
+            // const float yb = p2->get_shape().getPosition().y;
+            // const float distance_between_centers = sqrt((xb - xa) * (xb - xa) + (yb - ya) * (yb - ya));
+            // const float sum_of_radius = p1->get_shape().getRadius() + p2->get_shape().getRadius();
+            //
 
-            if (sum_of_radius >= distance_between_centers) {
+
+            // if (sum_of_radius >= distance_between_centers) {
+            if(check_collision(p1, p2)){
                 const sf::Vector2f v1 = p1->get_force();
                 const sf::Vector2f v2 = p2->get_force();
 
-                sf::Vector2f relative_velocity = Utils::subtract_vectors(v1, v2);
-                sf::Vector2f collision_normal = Utils::normalize_vector(Utils::subtract_vectors(p1->get_shape().getPosition(), p2->get_shape().getPosition()));
+                const sf::Vector2f relative_velocity = Utils::subtract_vectors(v1, v2);
+                const sf::Vector2f collision_normal = Utils::normalize_vector(Utils::subtract_vectors(p1->get_shape().getPosition(), p2->get_shape().getPosition()));
 
                 const float dot_product = Utils::calculate_dot_product(relative_velocity, collision_normal);
 
                 if (dot_product > 0) continue;
 
-                const float restitution = 0.5;
-                const float impulse = (-(1 + restitution) * dot_product) / (1 / p1->get_mass() + 1 / p2->get_mass());
+                constexpr float restitution = 0.5;
+                const float impulse = (-1 * (1 + restitution) * dot_product) / (1 / p1->get_mass() + 1 / p2->get_mass());
                 const sf::Vector2f impulse_vector = { impulse * collision_normal.x, impulse * collision_normal.y };
-                const sf::Vector2f impulse_vector_second = { impulse * (-1 * collision_normal.x), impulse * (-1 * collision_normal.y) };
 
-                if (p1->get_force().x < 0) {
-                    p1->set_force(sf::Vector2f(p1->get_force().x + this->wall_hit_force_decay + impulse_vector.x / p1->get_mass(), p1->get_force().y + impulse_vector.y / p1->get_mass()));
-                }
-                else {
-                    p1->set_force(sf::Vector2f(p1->get_force().x - this->wall_hit_force_decay + impulse_vector.x / p1->get_mass(), p1->get_force().y + impulse_vector.y / p1->get_mass()));
-                }
+                p1->set_force({ p1->get_force().x + impulse_vector.x / p1->get_mass(), p1->get_force().y + impulse_vector.y / p1->get_mass() });
 
-                p2->set_force({ p2->get_force().y - impulse_vector.y / p2->get_mass(), p2->get_force().y - impulse_vector.y / p2->get_mass() });
+                p2->set_force({ p2->get_force().x - impulse_vector.x / p2->get_mass(), p2->get_force().y - impulse_vector.y / p2->get_mass() });
 
-                if (p1->get_particle_type() == Utils::nucleon) {
-                    sf::Vector2f og_pos = p1->get_shape().getPosition();
-                    const float og_x_force = p2->get_force().x;
-                    const float og_y_force = p2->get_force().y;
+
+                if (p1->get_particle_type() == Utils::nucleon && p2->get_particle_type() == Utils::slow_neutron
+                    || p1->get_particle_type() == Utils::slow_neutron && p2->get_particle_type() == Utils::nucleon) {
+                    const sf::Vector2f og_pos = p1->get_shape().getPosition();
                     remove_particle(p1->return_id());
-                    this->add_particle(5, og_pos, sf::Color{ 29, 53, 87 }, { 25 * p1->get_force().x + this->wall_hit_force_decay + impulse_vector_second.x / 5, 25 * p1->get_force().y + impulse_vector_second.y / 5 }, 1.f, Utils::neutron);
-                    this->add_particle(5, og_pos, sf::Color{ 29, 53, 87 }, { 25 * p1->get_force().x + this->wall_hit_force_decay + impulse_vector.x / 5, 25 * p1->get_force().y + impulse_vector.y / 5 }, 1.f, Utils::neutron);
-                    this->add_particle(16, og_pos, sf::Color{ 107, 107, 107 }, { impulse_vector.x / 25, impulse_vector.y / 25 }, 10.f, Utils::xenon);
+                    std::cout << this->get_random_direction() << ", " << this->get_random_direction() << "\n";
+                    this->add_particle(5, og_pos, sf::Color{ 29, 53, 87 }, {this->get_random_direction(), this->get_random_direction()}, 1.f, Utils::slow_neutron);
+                    this->add_particle(5, og_pos, sf::Color{ 29, 53, 87 }, { this->get_random_direction(), this->get_random_direction()}, 1.f, Utils::slow_neutron);
+                    this->add_particle(16, og_pos, sf::Color{ 107, 107, 107 }, { impulse_vector.x / 25, impulse_vector.y / 25 }, 10000.f, Utils::xenon);
                     return;
                 }
             }
@@ -150,3 +161,5 @@ void Particle_container::particle_collisions() {
 }
 
 void Particle_container::particle_collisions_test(sf::RenderWindow& _window) {}
+
+

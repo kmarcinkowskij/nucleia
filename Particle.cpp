@@ -52,3 +52,19 @@ int Particle::return_id() const {
     return this->particle_id;
 }
 
+float Particle::get_left_pos() const {
+    return this->get_shape().getOrigin().x - ( this->get_shape().getRadius()/2);
+}
+
+float Particle::get_right_pos() const {
+    return this->get_shape().getOrigin().x + ( this->get_shape().getRadius()/2);
+}
+
+float Particle::get_top_pos() const {
+    return this->get_shape().getOrigin().y + ( this->get_shape().getRadius()/2);
+}
+
+float Particle::get_bottom_pos() const {
+    return this->get_shape().getOrigin().x - ( this->get_shape().getRadius()/2);
+}
+

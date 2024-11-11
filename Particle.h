@@ -26,6 +26,10 @@ public:
         shape.setFillColor(_particle_color);
         shape.setPosition(_particle_position);
         particle_force_base = _particle_force;
+        if(particle_type == Utils::fast_neutron) {
+            shape.setOutlineThickness(2);
+            shape.setOutlineColor(sf::Color::Red);
+        }
     }
 
     void update(const float &_delta_time);
@@ -37,6 +41,11 @@ public:
     sf::CircleShape get_shape() const;
     float get_mass() const;
     int return_id() const;
+
+    float get_left_pos() const;
+    float get_right_pos() const;
+    float get_top_pos() const;
+    float get_bottom_pos() const;
 
     Utils::particle_types get_particle_type() const {
         return particle_type;

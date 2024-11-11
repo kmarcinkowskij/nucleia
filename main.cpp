@@ -1,8 +1,4 @@
-#include <iostream>
-#include <random>
-#include <random>
-
-#include <SFML/Graphics.hpp>
+#include "headers/Graphics.hpp"
 #include "Particle_container.h"
 
 int main()
@@ -10,15 +6,16 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1280, 1090), "SFML Application");
     window.setFramerateLimit(60);
     sf::Clock time;
-    auto container = new Particle_container(window.getSize());
 
-    for(int i = 120; i < window.getSize().x - 120; i += 120) {
-        for(int j = 120; j < window.getSize().y - 120; j += 120) {
+    auto container = std::make_unique<Particle_container>(window.getSize());
+
+    for(int i = 100; i < window.getSize().x - 100; i += 100) {
+        for(int j = 100; j < window.getSize().y - 100; j += 100) {
             container->add_particle(20, sf::Vector2f(i, j), sf::Color{69,123,157}, sf::Vector2f(0.f, 0.f), 25.f, Utils::nucleon);
         }
     }
 
-    container->add_particle(5, {5,5}, sf::Color{29, 53, 87}, sf::Vector2f(50.f, 50.f), 1.f, Utils::neutron);
+    container->add_particle(5, {5,5}, sf::Color{29, 53, 87}, sf::Vector2f(50.f, 50.f), 1.f, Utils::slow_neutron);
 
     while (window.isOpen())
     {
@@ -39,7 +36,5 @@ int main()
 
         window.display();
     }
-
-    delete(container);
     return 0;
 }

@@ -16,7 +16,7 @@ set(SOURCE_FILES main.cpp
 )
 add_executable(first ${SOURCE_FILES})
 
-set(SFML_DIR "C:/vcpkg/vcpkg/packages/sfml_x64-windows/share/sfml")
+set(SFML_DIR "/usr/local/include/SFML")
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
